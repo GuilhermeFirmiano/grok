@@ -1,0 +1,69 @@
+    
+version: 2.1
+
+defaults: &defaults
+  working_directory: /go/src/github.com/GuilhermeFirmiano/grok
+commands:
+  autotag:
+    steps:
+      - run: |
+          make install-autotag
+jobs:
+  run-tests:
+    <<: *defaults
+    docker:
+    - image: circleci/golang:1.14
+      environment:
+        AWS_ACCESS_KEY_ID: clienteid
+        AWS_SECRET_ACCESS_KEY: clientsecret
+    - image: mongo
+    - image: localstack/localstack
+      environment:
+        DEBUG: 1
+        SERVICES: sqs,sns
+        DEFAULT_REGION: us-west-2
+    steps:
+      - checkout
+      - run: 
+          name: Waiting for localstack ...
+          command: |
+           until $(nc -zv localhost 4566); do
+                printf '.'
+                sleep 1
+            done
+      - run:
+          name: Run Rebase
+          command: make run-rebase
+      - run:
+          name: Build Package
+          command: make build-package
+      - run:
+          name: Run Tests
+          command: make run-tests
+  release-vesion:
+    <<: *defaults
+    docker:
+    - image: circleci/golang:1.14
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - 9a:b3:df:33:d0:b0:d7:55:c9:7d:e3:55:58:e4:88:13
+      - checkout
+      - autotag
+      - run:
+          name: Tag Git Version
+          command: make tag-version
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - run-tests
+
+      - release-vesion:
+          requires:
+            - run-tests
+          filters:
+            branches:
+              only:
+                - master

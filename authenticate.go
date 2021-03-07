@@ -15,7 +15,7 @@ import (
 
 const (
 	// AuthClaimNamespace ...
-	AuthClaimNamespace = "https://api.contbank.com/"
+	AuthClaimNamespace = "https://api.guilhermefirmiano.com/"
 )
 
 // Authenticate ...

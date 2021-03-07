@@ -3,7 +3,7 @@ package grok_test
 import (
 	"testing"
 
-	"github.com/contbank/grok"
+	"github.com/GuilhermeFirmiano/grok"
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )

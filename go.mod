@@ -1,4 +1,4 @@
-module github.com/contbank/grok
+module github.com/GuilhermeFirmiano/grok
 
 go 1.14
 

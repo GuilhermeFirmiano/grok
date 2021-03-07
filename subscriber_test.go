@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/GuilhermeFirmiano/grok"
 	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/contbank/grok"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )

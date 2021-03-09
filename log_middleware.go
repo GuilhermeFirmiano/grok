@@ -103,6 +103,6 @@ func recovery(c *gin.Context) {
 	if err := recover(); err != nil {
 		logrus.WithField("error", err).Error("Error on logging middleware")
 		internalServerError := NewError(http.StatusInternalServerError, "internal server error")
-		c.JSON(http.StatusInternalServerError, internalServerError)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, internalServerError)
 	}
 }
